@@ -95,7 +95,7 @@ class _LoginState extends State<Login> {
                   //prefix iocn
 
                   hintStyle: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w100),
+                      fontSize: 18, fontWeight: FontWeight.w200),
                   //hint text style
                   labelStyle: TextStyle(
                       fontSize: 13, color: Colors.redAccent), //label style
@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                   prefixIcon: Icon(Icons.password),
                   //prefix iocn
                   hintStyle: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w100),
+                      fontSize: 18, fontWeight: FontWeight.w200),
                   //hint text style
                   labelStyle: TextStyle(
                       fontSize: 13, color: Colors.redAccent), //label style
@@ -172,9 +172,16 @@ class _LoginState extends State<Login> {
                 ),
               ),
               onPressed: () async {
-                Login.signin(context,
-                    email = userEmailController.text,
-                    password = passwordController.text);
+
+                if(userEmailController.text .isEmpty||userEmailController.text==null && passwordController.text .isEmpty||passwordController.text==null){
+                  showAboutDialog(context: context);
+                }else{
+                  Login.signin(context,email = userEmailController.text,password= passwordController.text);
+
+                }
+                // Login.signin(context,
+                //     email = userEmailController.text,
+                //     password = passwordController.text);
               },
 
               child: Text(
@@ -212,6 +219,7 @@ class _LoginState extends State<Login> {
   }
 
   void showSnackBar(BuildContext context, String content) {
+    content="email and password are required";
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(content),

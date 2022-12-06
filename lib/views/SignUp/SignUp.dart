@@ -32,6 +32,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController confirmpassController = new TextEditingController();
 
   TextEditingController userPhoneController = new TextEditingController();
+   final content="email and password are required";
 
   late String _email, _password;
 
@@ -71,7 +72,7 @@ class _SignUpState extends State<SignUp> {
                     // labelText: "UserEmail", //babel text
                     hintText: " UserName ", //hint text
                     prefixIcon: Icon(Icons.person), //prefix iocn
-                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w100), //hint text style
+                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w200), //hint text style
                     // labelStyle: TextStyle(fontSize: 13, color: Colors.redAccent), //label style
                   )
               )
@@ -93,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                     // labelText: "UserEmail", //babel text
                     hintText: "Enter your email", //hint text
                     prefixIcon: Icon(Icons.email), //prefix iocn
-                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w100), //hint text style
+                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w200), //hint text style
                     labelStyle: TextStyle(fontSize: 13, color: Colors.redAccent), //label style
                   )
 
@@ -109,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                 // labelText: "UserEmail", //babel text
                 hintText: " PhoneNumber", //hint text
                 prefixIcon: Icon(Icons.phone), //prefix iocn
-                hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w100), //hint text style
+                hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w200), //hint text style
                 // labelStyle: TextStyle(fontSize: 13, color: Colors.redAccent), //label style
 
               )
@@ -136,7 +137,7 @@ class _SignUpState extends State<SignUp> {
                     // labelText: "password", //babel text
                     hintText: "Enter your password", //hint text
                     prefixIcon: Icon(Icons.password), //prefix iocn
-                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w100), //hint text style
+                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w200), //hint text style
                     labelStyle: TextStyle(fontSize: 13, color: Colors.redAccent), //label style
                   )
 
@@ -156,7 +157,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: InputDecoration(
                     labelText: "Comfirm Password", //babel text
                     prefixIcon: Icon(Icons.password), //prefix iocn
-                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w100), //hint text style//
+                    hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w200), //hint text style//
                     // labelStyle: TextStyle(fontSize: 13, color: Colors.redAccent), //label style
                   )
 
@@ -187,7 +188,12 @@ class _SignUpState extends State<SignUp> {
                 sharedPrefs.setString("username", userNameController.text);
                 sharedPrefs.setString("phone", userPhoneController.text);
                 sharedPrefs.setString("comfirmedpassword",passwordController.text);
-               signup(context,_email = userEmailController.text,_password= passwordController.text);
+                if(userEmailController.text .isEmpty||userEmailController.text==null && passwordController.text .isEmpty||passwordController.text==null){
+                  showSnackBar(context,content);
+                }else{
+                  signup(context,_email = userEmailController.text,_password= passwordController.text);
+
+                }
 
                 },
               child: Text(
@@ -231,6 +237,14 @@ class _SignUpState extends State<SignUp> {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => HomeScreen(title: '')));
     });
+  }
+
+  void showSnackBar(BuildContext context, String content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(content),
+      ),
+    );
   }
 
   //    Future singUpToFireBase(context, name, email, password, phone) async {
