@@ -20,20 +20,19 @@ class Login extends StatefulWidget{
   static void signin(BuildContext context, String email, String password) {
     final auth = FirebaseAuth.instance;
     auth.signInWithEmailAndPassword(email: email, password: password).then((_) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen(title: ''))
-      );
-    });
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen(title: ''))
+        );
+    }
+    );
   }
-
-
 }
-
 class _LoginState extends State<Login> {
 
   @override
   void initState() {
-// checkSignedIn(context);
+ // checkSignedIn(context);
   }
 
   TextEditingController userEmailController = new TextEditingController();
@@ -101,14 +100,6 @@ class _LoginState extends State<Login> {
                   labelStyle: TextStyle(
                       fontSize: 13, color: Colors.redAccent), //label style
                 ),
-                //  validator: (_){
-                // if( isMatched){
-                //   return null;
-                // }
-                // else{
-                //   return "email and password doesnot match";
-                // }
-                //  }
 
               )
 
@@ -184,14 +175,8 @@ class _LoginState extends State<Login> {
                 Login.signin(context,
                     email = userEmailController.text,
                     password = passwordController.text);
-
-
-                // getValidateData(context);
-                // .whenComplete(() =>
-                // Navigator.push(context, MaterialPageRoute(builder: (context)  =>finalemail == null? SignUp() : HomeScreen(title: ''),
-
-
               },
+
               child: Text(
                   "LogIn",
                   style: TextStyle(color: Colors.purple, fontSize: 18)
@@ -234,18 +219,6 @@ class _LoginState extends State<Login> {
     );
   }
   //
-  // void initializeFirebase() {
+
   //
-  // }
-  //
-  //   void checkSignedIn(BuildContext context) {
-  //   initializeFirebase();
-  //
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   if (user != null) {
-  //     Navigator.of(context).pushReplacement(
-  //         MaterialPageRoute(builder: (context) => HomeScreen(title: "title")));
-  //
-  //
-  //   }}
 }

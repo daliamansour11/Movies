@@ -1,16 +1,31 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/firebase_options.dart';
+import 'package:movies/views/Homepage/HomeScreen.dart';
 import 'package:movies/views/Login/Login.dart';
+import 'package:movies/views/WelcomePage/WelCome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main()  async{
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     name: 'Movies',
     options:DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  Widget? widget;
+  // SharedPreferences sharedPrefs =await SharedPreferences.getInstance();
+  // String? UserId  = sharedPrefs.getString("Uid");
+  // if(UserId ==null||UserId==""){
+  //     widget = Login();
+  //     }else {
+  //   widget = HomeScreen();
+  // }
+  runApp( MyApp(
+   // mwidget: widget,
+  ));
+
 }
 
 class MyApp extends StatelessWidget {
@@ -20,13 +35,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '  Auth',
+      title: 'Flutter Demo',
       theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
       ),
-      home:Login(),
+      home:WelcomeScreen(),
     );
   }
 }

@@ -226,19 +226,17 @@ class _SignUpState extends State<SignUp> {
   }
   static void signup(BuildContext context,String email, String password) {
     FirebaseAuth auth = FirebaseAuth.instance;
-    auth.createUserWithEmailAndPassword(
-        email: email, password: password)
+    auth.createUserWithEmailAndPassword(email: email, password: password)
         .then((_) {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => HomeScreen(title: '')));
     });
-
   }
+
+  //    Future singUpToFireBase(context, name, email, password, phone) async {
   //
-  // Future singUpToFireBase(context, name, email, password, phone) async {
-  //
-  //   await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: userEmailController.text, password: password.toString())
+  //    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //     email: userEmailController.text, password: password.toString())
   //       .then((value) {
   //     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen(title: " Your Movies")));
   //
@@ -249,7 +247,7 @@ class _SignUpState extends State<SignUp> {
   //   }).catchError((error) {
   //     print(error.toString());
   //   });
-  // }
+  //  }
 }
 
 
