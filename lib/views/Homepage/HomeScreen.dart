@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/models/Movie.dart';
 import 'package:movies/service/MoviesRepository.dart';
 import 'package:movies/views/Homepage/HomeScreen.dart';
+import 'package:movies/views/Login/Login.dart';
 import 'package:movies/views/details/DetailsScreen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key, required this.title}) : super(key: key);
+  HomeScreen({Key? key,  this.title =''}) : super(key: key);
   final String title;
 
   @override
@@ -39,7 +41,12 @@ class _MyHomePageState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
 
-
+         actions: [
+           IconButton(onPressed: (){
+             signout(context: context);
+           }, icon:Icon(Icons.logout),color: Colors.purple,),
+           SizedBox(width: 10,),
+         ],
 
         backgroundColor: Colors.grey[200],
         title: Text(
@@ -129,6 +136,13 @@ class _MyHomePageState extends State<HomeScreen> {
         ),
 
                ));
+  }
+   signout({required BuildContext context})  {
+    final auth = FirebaseAuth.instance;
+     auth.signOut().then((value){
+       Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> Login() ));
+    }
+    );
 
   }
 }

@@ -20,20 +20,19 @@ class Login extends StatefulWidget{
   static void signin(BuildContext context, String email, String password) {
     final auth = FirebaseAuth.instance;
     auth.signInWithEmailAndPassword(email: email, password: password).then((_) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen(title: ''))
-      );
-    });
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen(title: ''))
+        );
+    }
+    );
   }
-
-
 }
-
 class _LoginState extends State<Login> {
 
   @override
   void initState() {
-// checkSignedIn(context);
+ // checkSignedIn(context);
   }
 
   TextEditingController userEmailController = new TextEditingController();
@@ -96,19 +95,11 @@ class _LoginState extends State<Login> {
                   //prefix iocn
 
                   hintStyle: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w100),
+                      fontSize: 18, fontWeight: FontWeight.w200),
                   //hint text style
                   labelStyle: TextStyle(
                       fontSize: 13, color: Colors.redAccent), //label style
                 ),
-                //  validator: (_){
-                // if( isMatched){
-                //   return null;
-                // }
-                // else{
-                //   return "email and password doesnot match";
-                // }
-                //  }
 
               )
 
@@ -134,7 +125,7 @@ class _LoginState extends State<Login> {
                   prefixIcon: Icon(Icons.password),
                   //prefix iocn
                   hintStyle: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w100),
+                      fontSize: 18, fontWeight: FontWeight.w200),
                   //hint text style
                   labelStyle: TextStyle(
                       fontSize: 13, color: Colors.redAccent), //label style
@@ -181,17 +172,18 @@ class _LoginState extends State<Login> {
                 ),
               ),
               onPressed: () async {
-                Login.signin(context,
-                    email = userEmailController.text,
-                    password = passwordController.text);
 
+                if(userEmailController.text .isEmpty||userEmailController.text==null && passwordController.text .isEmpty||passwordController.text==null){
+                  showAboutDialog(context: context);
+                }else{
+                  Login.signin(context,email = userEmailController.text,password= passwordController.text);
 
-                // getValidateData(context);
-                // .whenComplete(() =>
-                // Navigator.push(context, MaterialPageRoute(builder: (context)  =>finalemail == null? SignUp() : HomeScreen(title: ''),
-
-
+                }
+                // Login.signin(context,
+                //     email = userEmailController.text,
+                //     password = passwordController.text);
               },
+
               child: Text(
                   "LogIn",
                   style: TextStyle(color: Colors.purple, fontSize: 18)
@@ -227,6 +219,7 @@ class _LoginState extends State<Login> {
   }
 
   void showSnackBar(BuildContext context, String content) {
+    content="email and password are required";
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(content),
@@ -234,18 +227,6 @@ class _LoginState extends State<Login> {
     );
   }
   //
-  // void initializeFirebase() {
+
   //
-  // }
-  //
-  //   void checkSignedIn(BuildContext context) {
-  //   initializeFirebase();
-  //
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   if (user != null) {
-  //     Navigator.of(context).pushReplacement(
-  //         MaterialPageRoute(builder: (context) => HomeScreen(title: "title")));
-  //
-  //
-  //   }}
 }
