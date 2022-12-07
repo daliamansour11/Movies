@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -12,6 +14,16 @@ class ResetPassword extends StatefulWidget{
 class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController userEmailController = new TextEditingController();
   late String email;
+  var _formKey = GlobalKey<FormState>();
+  var isLoading = false;
+
+  void _submit() {
+    final isValid = _formKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _formKey.currentState!.save();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +32,21 @@ class _ResetPasswordState extends State<ResetPassword> {
         .size;
 
     return Scaffold(
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:<Widget> [
-        Container(
-        alignment: Alignment.center,
-            margin: const EdgeInsets.symmetric(horizontal: 70, vertical: 0),
-            decoration: BoxDecoration(
-                color: Colors.grey[200],
-// border: Border.all( color: Colors.purpleAccent,width: 3.0,),
-                borderRadius: BorderRadius.circular(30.0)
-            ),
+      body:Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            Container(
+            alignment: Alignment.center,
+              margin: const EdgeInsets.symmetric(horizontal: 70, vertical: 0),
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  // border: Border.all( color: Colors.purpleAccent,width: 3.0,),
+                  borderRadius: BorderRadius.circular(30.0)
+              ),
 // color: Colors.blue,
 
             child: const Text("Reset Password",
@@ -42,12 +58,24 @@ class _ResetPasswordState extends State<ResetPassword> {
 
 
         SizedBox(height: size.height * 0.03,),
-        Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: 40),
-            child: TextField(
-              controller: userEmailController,
-              obscureText: false,
+              Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 30),
+                  child: TextFormField(
+                    controller: userEmailController,
+                    obscureText: false,
+                    validator:(value){
+                      if (value!.isEmpty  ||value ==null)
+                      {
+                        return "please enter  your email";
+                      }
+                      else if(!value .contains("@") ||!value .contains(".") ){
+                        return " please enter valide email address";
+
+                      }
+                      return null;
+
+                    },
               onChanged: (value) {
                 setState(() {
                   email = value.trim();
@@ -91,27 +119,18 @@ class _ResetPasswordState extends State<ResetPassword> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                   ),
-                  onPressed: () async {
-
-                    resetPassword(context, email);
-                      Fluttertoast.showToast(
-                        msg: "A reset email has been sent to you",  // message
-                        toastLength: Toast.LENGTH_LONG, // length
-                        gravity: ToastGravity.CENTER, // location
-
-                        timeInSecForIosWeb: 2,
-                      );
-                      Navigator.of(context).pop();
-                    },
-
-
+                  onPressed: ()  {
+                    if (_formKey.currentState!.validate()) {
+                      resetPassword();
+                    }
+                  },
 
 
 
                   child: Text(
                       "Done",
                       style: TextStyle(color: Colors.purple,fontSize: 18)
-                  ),
+    )
                 ),
               ),
 
@@ -120,10 +139,29 @@ class _ResetPasswordState extends State<ResetPassword> {
         ],
     ),
 
-    );
+    )));
   }
 
-  void resetPassword(BuildContext context, String email) {}
+  Future resetPassword() async{
+try {
+  await FirebaseAuth.instance
+      .sendPasswordResetEmail(email: userEmailController.text);
+    Fluttertoast.showToast(
+    msg: "A reset email has been sent to you", // message
+    toastLength: Toast.LENGTH_LONG, // length
+    gravity: ToastGravity.CENTER, // location
+
+    timeInSecForIosWeb: 2,
+    );
+    Navigator.of(context).pop();
+    }on FirebaseAuthException catch (e){
+  print(e);
 
 
 }
+
+}
+
+  }
+
+
